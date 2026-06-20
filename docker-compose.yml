@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: uniactivity_app
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - sqlite_data:/app/src/database
+    restart: always
+
+volumes:
+  sqlite_data:

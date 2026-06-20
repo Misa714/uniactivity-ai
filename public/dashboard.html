@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniActivity AI - Panel de Gestión</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-primary shadow-sm mb-4">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1 fw-bold">UniActivity AI Dashboard</span>
+            <button class="btn btn-outline-light btn-sm" onclick="logout()">Cerrar Sesión</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4" id="adminPanel" style="display: none;">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary fw-bold mb-3">Nueva Actividad</h5>
+                        <form id="activityForm">
+                            <div class="mb-3">
+                                <label class="form-label">Título</label>
+                                <input type="text" id="actTitle" class="form-control" required>
+                                <button type="button" class="btn btn-sm btn-outline-purple mt-2" onclick="magicAI()">✨
+                                    Generar con IA</button>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Descripción</label>
+                                <textarea id="actDesc" class="form-control" rows="4" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Fecha</label>
+                                <input type="date" id="actDate" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Guardar Actividad</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold text-secondary mb-3">Actividades Universitarias Registradas</h5>
+                        <div id="activitiesList" class="row">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .btn-outline-purple {
+            color: #6f42c1;
+            border-color: #6f42c1;
+        }
+
+        .btn-outline-purple:hover {
+            color: #fff;
+            background-color: #6f42c1;
+        }
+    </style>
+
+    <script>
+        const token = localStorage.getItem('token');
+        const role = localStorage.getItem('role');
+
+        if (!token) window.location.href = '/index.html';
+
+        // Control de roles visuales
+        if (role === 'Admin') {
+            document.getElementById('adminPanel').style.display = 'block';
+        }
+
+        // Invocar Asistente de IA
+        async function magicAI() {
+            const title = document.getElementById('actTitle').value;
+            if (!title) return alert('Escribe un título primero para guiar a la IA.');
+
+            const res = await fetch('/api/ai/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ title })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                document.getElementById('actDesc').value = data.generatedText;
+            }
+        }
+
+        // Guardar Actividad
+        document.getElementById('activityForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('actTitle').value;
+            const description = document.getElementById('actDesc').value;
+            const date = document.getElementById('actDate').value;
+
+            const res = await fetch('/api/activities', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ title, description, date })
+            });
+            if (res.ok) {
+                document.getElementById('activityForm').reset();
+                loadActivities();
+            }
+        });
+
+        // Cargar Actividades desde la API
+        async function loadActivities() {
+            const res = await fetch('/api/activities', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const activities = await res.json();
+            const container = document.getElementById('activitiesList');
+            container.innerHTML = '';
+
+            activities.forEach(act => {
+                container.innerHTML += `
+          <div class="col-12 mb-3">
+            <div class="card border-light bg-white shadow-sm h-100">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                  <h6 class="fw-bold text-dark m-0">${act.title}</h6>
+                  <span class="badge bg-secondary p-1" style="font-size: 0.75rem;">${act.date}</span>
+                </div>
+                <p class="text-muted card-text mt-2 small">${act.description}</p>
+                ${role === 'Admin' ? `<button class="btn btn-danger btn-sm py-0 px-2" onclick="deleteAct(${act.id})">Eliminar</button>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+            });
+        }
+
+        async function deleteAct(id) {
+            if (!confirm('¿Seguro que deseas borrar esta actividad?')) return;
+            const res = await fetch(`/api/activities/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) loadActivities();
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = '/index.html';
+        }
+
+        loadActivities();
+    </script>
+</body>
+
+</html>
