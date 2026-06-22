@@ -25,7 +25,20 @@ const db = new sqlite3.Database(dbPath, (err) => {
                 description TEXT,
                 date TEXT
             )`);
-            console.log('Tablas base creadas con éxito.');
+
+            // NUEVA: Tabla de Inscripciones (Gestión de Participantes, Asistencia y Seguimiento)
+            db.run(`CREATE TABLE IF NOT EXISTS inscriptions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                activity_id INTEGER,
+                estudiante_id INTEGER,
+                asistencia TEXT DEFAULT 'Pendiente',
+                seguimiento TEXT DEFAULT 'En Progreso',
+                FOREIGN KEY(activity_id) REFERENCES activities(id) ON DELETE CASCADE,
+                FOREIGN KEY(estudiante_id) REFERENCES users(id) ON DELETE CASCADE,
+                UNIQUE(activity_id, estudiante_id)
+            )`);
+
+            console.log('Tablas base e inscripciones creadas con éxito.');
         });
     }
 });

@@ -4,160 +4,446 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniActivity AI - Panel de Gestión</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>UniActivity AI - Cloud Workspace</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <style>
+        :root {
+            --indigo-brand: #4f46e5;
+            --indigo-hover: #4338ca;
+            --purple-ai: #8b5cf6;
+            --bg-app: #f8fafc;
+        }
+
+        body {
+            background-color: var(--bg-app);
+            font-family: system-ui, -apple-system, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Navbar de Alta Gama */
+        .navbar-custom {
+            background: linear-gradient(135deg, var(--indigo-brand) 0%, #3b82f6 100%);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tarjetas estilo Glassmorphism */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .activity-card {
+            border-left: 5px solid var(--indigo-brand);
+        }
+
+        .activity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px -5px rgba(79, 70, 229, 0.15);
+        }
+
+        /* Botón Mágico IA */
+        .btn-ai {
+            background: linear-gradient(135deg, var(--purple-ai) 0%, #d946ef 100%);
+            color: white;
+            border: none;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .btn-ai:hover {
+            opacity: 0.9;
+            color: white;
+            transform: scale(1.02);
+        }
+
+        .badge-role {
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+    </style>
 </head>
 
-<body class="bg-light">
-    <nav class="navbar navbar-dark bg-primary shadow-sm mb-4">
+<body>
+
+    <nav class="navbar navbar-dark navbar-custom py-3 mb-4">
         <div class="container">
-            <span class="navbar-brand mb-0 h1 fw-bold">UniActivity AI Dashboard</span>
-            <button class="btn btn-outline-light btn-sm" onclick="logout()">Cerrar Sesión</button>
+            <span class="navbar-brand mb-0 h1 fw-bold d-flex align-items-center gap-2">
+                <i class="fa-solid fa-graduation-cap fs-3"></i> UniActivity AI
+            </span>
+            <div class="d-flex align-items-center gap-3">
+                <div class="text-end text-white d-none d-sm-block">
+                    <small class="d-block opacity-75" style="font-size: 0.75rem;">Conectado como</small>
+                    <span class="badge bg-white text-dark badge-role fw-bold shadow-sm"
+                        id="userRoleDisplay">Cargando...</span>
+                </div>
+                <button class="btn btn-light btn-sm fw-semibold shadow-sm px-3" onclick="logout()">
+                    <i class="fa-solid fa-right-from-bracket me-1"></i> Salir
+                </button>
+            </div>
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container animate__animated animate__fadeIn">
         <div class="row">
-            <div class="col-md-4 mb-4" id="adminPanel" style="display: none;">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title text-primary fw-bold mb-3">Nueva Actividad</h5>
+
+            <div class="col-lg-4 col-md-5 mb-4" id="adminPanel" style="display: none;">
+                <div class="card glass-card shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold text-dark m-0" id="formTitle">
+                                <i class="fa-solid fa-circle-plus text-primary me-2"></i>Nueva Actividad
+                            </h5>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="btnCancelEdit"
+                                onclick="cancelEdit()" style="display: none;">Cancelar</button>
+                        </div>
+
                         <form id="activityForm">
                             <div class="mb-3">
-                                <label class="form-label">Título</label>
-                                <input type="text" id="actTitle" class="form-control" required>
-                                <button type="button" class="btn btn-sm btn-outline-purple mt-2" onclick="magicAI()">✨
-                                    Generar con IA</button>
+                                <label class="form-label fw-semibold small text-muted">TÍTULO ACADÉMICO</label>
+                                <input type="text" id="actTitle" class="form-control rounded-3"
+                                    placeholder="Ej: Taller Práctico Docker" required>
+                                <button type="button" class="btn btn-ai btn-sm w-100 mt-2 shadow-sm"
+                                    onclick="magicAI()">
+                                    <i class="fa-solid fa-wand-magic-sparkles me-1"></i> Autocompletar Descripción con
+                                    IA
+                                </button>
                             </div>
+
                             <div class="mb-3">
-                                <label class="form-label">Descripción</label>
-                                <textarea id="actDesc" class="form-control" rows="4" required></textarea>
+                                <label class="form-label fw-semibold small text-muted">DESCRIPCIÓN Y OBJETIVOS</label>
+                                <textarea id="actDesc" class="form-control rounded-3" rows="4"
+                                    placeholder="Detalla las competencias de la actividad..." required></textarea>
                             </div>
+
                             <div class="mb-3">
-                                <label class="form-label">Fecha</label>
-                                <input type="date" id="actDate" class="form-control" required>
+                                <label class="form-label fw-semibold small text-muted">FECHA DE EJECUCIÓN</label>
+                                <input type="date" id="actDate" class="form-control rounded-3" required>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100">Guardar Actividad</button>
+
+                            <button type="submit" class="btn btn-primary w-100 py-2 rounded-3 fw-bold shadow-sm"
+                                id="btnSubmitForm">
+                                <i class="fa-solid fa-cloud-arrow-up me-1"></i> Publicar Actividad
+                            </button>
                         </form>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-8">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold text-secondary mb-3">Actividades Universitarias Registradas</h5>
-                        <div id="activitiesList" class="row">
-                        </div>
+            <div id="listPanel" class="col-lg-8 col-md-7">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-secondary m-0">Hoja de Ruta de Actividades</h5>
+                    <button class="btn btn-sm btn-outline-primary" onclick="loadActivities()">
+                        <i class="fa-solid fa-rotate-right"></i> Refrescar
+                    </button>
+                </div>
+                <div id="activitiesList" class="row"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalAlumnos" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header bg-primary text-white rounded-top-4">
+                    <h5 class="modal-title fw-bold">
+                        <i class="fa-solid fa-users me-2"></i> Control de Participantes: <span
+                            id="modalActTitle"></span>
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Estudiante</th>
+                                    <th>Control Asistencia</th>
+                                    <th>Seguimiento Académico</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaAlumnosBody">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <style>
-        .btn-outline-purple {
-            color: #6f42c1;
-            border-color: #6f42c1;
-        }
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
+        <div id="appToast" class="toast align-items-center text-white border-0 shadow-lg" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body fw-medium d-flex align-items-center gap-2" id="toastMsg"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
 
-        .btn-outline-purple:hover {
-            color: #fff;
-            background-color: #6f42c1;
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         const token = localStorage.getItem('token');
-        const role = localStorage.getItem('role');
+        const role = localStorage.getItem('role') || 'estudiante';
+        let editingActId = null; // Variable de estado para saber si estamos editando o creando
 
         if (!token) window.location.href = '/index.html';
 
-        // Control de roles visuales
-        if (role === 'Admin') {
+        // Ajuste de interfaz según el Rol
+        const isDocente = (role === 'Admin' || role === 'docente');
+        document.getElementById('userRoleDisplay').innerText = isDocente ? 'Docente / Admin' : 'Estudiante';
+
+        if (isDocente) {
             document.getElementById('adminPanel').style.display = 'block';
+            document.getElementById('listPanel').className = 'col-lg-8 col-md-7';
+        } else {
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('listPanel').className = 'col-12'; // Alumnos ven la lista a pantalla completa
         }
 
-        // Invocar Asistente de IA
+        // Disparador de Notificaciones Toast
+        function showToast(msg, bgClass = 'bg-success', icon = 'fa-circle-check') {
+            const toastEl = document.getElementById('appToast');
+            toastEl.className = `toast align-items-center text-white border-0 shadow-lg ${bgClass}`;
+            document.getElementById('toastMsg').innerHTML = `<i class="fa-solid ${icon} fs-5"></i> ${msg}`;
+            const toast = bootstrap.Toast.getOrCreateInstance(toastEl);
+            toast.show();
+        }
+
+        // Escape seguro de strings para evitar romper el HTML
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        }
+
+        // --- ASISTENTE DE IA ---
         async function magicAI() {
             const title = document.getElementById('actTitle').value;
-            if (!title) return alert('Escribe un título primero para guiar a la IA.');
+            if (!title) return showToast('Escribe un título primero para guiar a la IA', 'bg-warning text-dark', 'fa-triangle-exclamation');
 
-            const res = await fetch('/api/ai/generate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ title })
-            });
-            const data = await res.json();
-            if (res.ok) {
-                document.getElementById('actDesc').value = data.generatedText;
+            showToast('Generando contenido con IA...', 'bg-primary', 'fa-spinner fa-spin');
+            try {
+                const res = await fetch('/api/ai/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ title })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    document.getElementById('actDesc').value = data.generatedText;
+                    showToast('¡Descripción generada con éxito!', 'bg-success');
+                }
+            } catch (e) {
+                showToast('Error al conectar con la IA', 'bg-danger', 'fa-circle-xmark');
             }
         }
 
-        // Guardar Actividad
+        // --- GUARDAR O ACTUALIZAR ACTIVIDAD ---
         document.getElementById('activityForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const title = document.getElementById('actTitle').value;
             const description = document.getElementById('actDesc').value;
             const date = document.getElementById('actDate').value;
 
-            const res = await fetch('/api/activities', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ title, description, date })
-            });
-            if (res.ok) {
-                document.getElementById('activityForm').reset();
-                loadActivities();
+            const url = editingActId ? `/api/activities/${editingActId}` : '/api/activities';
+            const method = editingActId ? 'PUT' : 'POST';
+
+            try {
+                const res = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ title, description, date })
+                });
+
+                if (res.ok) {
+                    showToast(editingActId ? 'Actividad actualizada exitosamente' : 'Actividad publicada exitosamente');
+                    cancelEdit();
+                    loadActivities();
+                } else {
+                    showToast('Error al procesar la solicitud', 'bg-danger', 'fa-circle-xmark');
+                }
+            } catch (e) {
+                showToast('Error de conexión', 'bg-danger', 'fa-circle-xmark');
             }
         });
 
-        // Cargar Actividades desde la API
-        async function loadActivities() {
-            const res = await fetch('/api/activities', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const activities = await res.json();
-            const container = document.getElementById('activitiesList');
-            container.innerHTML = '';
+        // --- PRECARGAR FORMULARIO PARA EDITAR ---
+        function startEdit(id, title, desc, date) {
+            editingActId = id;
+            document.getElementById('actTitle').value = title;
+            document.getElementById('actDesc').value = desc;
+            document.getElementById('actDate').value = date;
 
-            activities.forEach(act => {
-                container.innerHTML += `
-          <div class="col-12 mb-3">
-            <div class="card border-light bg-white shadow-sm h-100">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                  <h6 class="fw-bold text-dark m-0">${act.title}</h6>
-                  <span class="badge bg-secondary p-1" style="font-size: 0.75rem;">${act.date}</span>
-                </div>
-                <p class="text-muted card-text mt-2 small">${act.description}</p>
-                ${role === 'Admin' ? `<button class="btn btn-danger btn-sm py-0 px-2" onclick="deleteAct(${act.id})">Eliminar</button>` : ''}
-              </div>
-            </div>
-          </div>
-        `;
-            });
+            document.getElementById('formTitle').innerHTML = '<i class="fa-solid fa-pen-to-square text-warning me-2"></i>Editar Actividad';
+            const btnSubmit = document.getElementById('btnSubmitForm');
+            btnSubmit.innerHTML = '<i class="fa-solid fa-floppy-disk me-1"></i> Guardar Cambios';
+            btnSubmit.className = 'btn btn-warning w-100 py-2 rounded-3 fw-bold shadow-sm text-dark';
+            document.getElementById('btnCancelEdit').style.display = 'inline-block';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function cancelEdit() {
+            editingActId = null;
+            document.getElementById('activityForm').reset();
+            document.getElementById('formTitle').innerHTML = '<i class="fa-solid fa-circle-plus text-primary me-2"></i>Nueva Actividad';
+            const btnSubmit = document.getElementById('btnSubmitForm');
+            btnSubmit.innerHTML = '<i class="fa-solid fa-cloud-arrow-up me-1"></i> Publicar Actividad';
+            btnSubmit.className = 'btn btn-primary w-100 py-2 rounded-3 fw-bold shadow-sm';
+            document.getElementById('btnCancelEdit').style.display = 'none';
+        }
+
+        // --- CARGAR ACTIVIDADES ---
+        async function loadActivities() {
+            try {
+                const res = await fetch('/api/activities', { headers: { 'Authorization': `Bearer ${token}` } });
+                const activities = await res.json();
+                const container = document.getElementById('activitiesList');
+                container.innerHTML = '';
+
+                if (activities.length === 0) {
+                    container.innerHTML = '<div class="col-12 text-center text-muted py-5"><i class="fa-solid fa-inbox fs-1 mb-2 d-block"></i>No hay actividades registradas en la plataforma.</div>';
+                    return;
+                }
+
+                activities.forEach(act => {
+                    let card = `
+            <div class="col-12 mb-3">
+              <div class="card glass-card activity-card h-100 p-2 shadow-sm">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h5 class="fw-bold text-dark m-0">${act.title}</h5>
+                    <span class="badge bg-indigo-subtle border border-indigo-subtle text-indigo rounded-pill px-3 py-1 text-dark fw-semibold">
+                      <i class="fa-regular fa-calendar me-1"></i> ${act.date}
+                    </span>
+                  </div>
+                  <p class="text-secondary small mt-2 mb-3" style="white-space: pre-line;">${act.description}</p>
+          `;
+
+                    if (isDocente) {
+                        card += `
+                  <div class="d-flex gap-2 pt-2 border-top border-light-subtle">
+                    <button class="btn btn-sm btn-outline-secondary fw-medium px-3" onclick="startEdit(${act.id}, '${escapeHtml(act.title)}', '${escapeHtml(act.description)}', '${act.date}')">
+                      <i class="fa-solid fa-pen"></i> Editar
+                    </button>
+                    <button class="btn btn-sm btn-info text-white fw-medium px-3 shadow-sm" onclick="verAlumnos(${act.id}, '${escapeHtml(act.title)}')">
+                      <i class="fa-solid fa-user-check me-1"></i> Alumnos Inscritos
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger px-3 ms-auto" onclick="deleteAct(${act.id})">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
+            `;
+                    } else {
+                        card += `
+                  <div class="pt-2 border-top border-light-subtle d-flex justify-content-end">
+                    <button class="btn btn-success btn-sm fw-bold px-4 py-2 shadow-sm" onclick="inscribirme(${act.id})">
+                      <i class="fa-solid fa-rocket me-1"></i> Inscribirme a esta Actividad
+                    </button>
+                  </div>
+            `;
+                    }
+
+                    card += `</div></div></div>`;
+                    container.innerHTML += card;
+                });
+            } catch (e) {
+                showToast('Error al cargar las actividades', 'bg-danger', 'fa-circle-xmark');
+            }
+        }
+
+        // --- INSCRIBIRSE A ACTIVIDAD (ALUMNO) ---
+        async function inscribirme(actId) {
+            try {
+                const res = await fetch('/api/activities/inscribe', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ activity_id: actId })
+                });
+                if (res.ok) {
+                    showToast('¡Inscripción exitosa! El docente ya puede controlar tu asistencia', 'bg-success', 'fa-party-horn');
+                } else {
+                    showToast('Ya te habías inscrito en esta actividad', 'bg-warning text-dark', 'fa-triangle-exclamation');
+                }
+            } catch (e) { showToast('Error al procesar la inscripción', 'bg-danger', 'fa-circle-xmark'); }
+        }
+
+        // --- GESTIÓN DE ASISTENCIA (DOCENTE) ---
+        async function verAlumnos(actId, title) {
+            document.getElementById('modalActTitle').innerText = title;
+            const tbody = document.getElementById('tablaAlumnosBody');
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center py-4">Cargando lista de alumnos...</td></tr>';
+
+            new bootstrap.Modal(document.getElementById('modalAlumnos')).show();
+
+            try {
+                const res = await fetch(`/api/activities/${actId}/participants`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const data = await res.json();
+                tbody.innerHTML = '';
+
+                if (!data || data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-4"><i class="fa-solid fa-user-slash me-2"></i>Ningún alumno se ha inscrito aún.</td></tr>';
+                    return;
+                }
+
+                data.forEach(item => {
+                    tbody.innerHTML += `
+            <tr>
+              <td class="fw-bold text-dark"><i class="fa-solid fa-user-graduate text-primary me-2"></i>${item.username}</td>
+              <td>
+                <select class="form-select form-select-sm" id="asist_${item.id}">
+                  <option value="Pendiente" ${item.asistencia === 'Pendiente' ? 'selected' : ''}>⏳ Pendiente</option>
+                  <option value="Asistió" ${item.asistencia === 'Asistió' ? 'selected' : ''}>✅ Asistió</option>
+                  <option value="Ausente" ${item.asistencia === 'Ausente' ? 'selected' : ''}>❌ Ausente</option>
+                </select>
+              </td>
+              <td>
+                <select class="form-select form-select-sm" id="seg_${item.id}">
+                  <option value="En Progreso" ${item.seguimiento === 'En Progreso' ? 'selected' : ''}>🏃 En Progreso</option>
+                  <option value="Completado" ${item.seguimiento === 'Completado' ? 'selected' : ''}>🏆 Completado</option>
+                  <option value="Reprobado" ${item.seguimiento === 'Reprobado' ? 'selected' : ''}>⚠️ Reprobado</option>
+                </select>
+              </td>
+              <td>
+                <button class="btn btn-success btn-sm fw-semibold px-3" onclick="guardarProgreso(${item.id})">Guardar</button>
+              </td>
+            </tr>
+          `;
+                });
+            } catch (e) { tbody.innerHTML = '<tr><td colspan="4" class="text-center text-danger">Error al cargar datos.</td></tr>'; }
+        }
+
+        async function guardarProgreso(inscriptId) {
+            const asistencia = document.getElementById(`asist_${inscriptId}`).value;
+            const seguimiento = document.getElementById(`seg_${inscriptId}`).value;
+            try {
+                const res = await fetch(`/api/activities/participants/${inscriptId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ asistencia, seguimiento })
+                });
+                if (res.ok) showToast('Progreso del alumno actualizado', 'bg-success');
+            } catch (e) { showToast('Error al guardar', 'bg-danger', 'fa-circle-xmark'); }
         }
 
         async function deleteAct(id) {
-            if (!confirm('¿Seguro que deseas borrar esta actividad?')) return;
-            const res = await fetch(`/api/activities/${id}`, {
-                method: 'DELETE',
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            if (res.ok) loadActivities();
+            if (!confirm('¿Estás seguro de eliminar esta actividad definitivamente?')) return;
+            const res = await fetch(`/api/activities/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+            if (res.ok) { showToast('Actividad eliminada', 'bg-info'); loadActivities(); }
         }
 
-        function logout() {
-            localStorage.clear();
-            window.location.href = '/index.html';
-        }
+        function logout() { localStorage.clear(); window.location.href = '/index.html'; }
 
         loadActivities();
     </script>
