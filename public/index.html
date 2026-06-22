@@ -4,101 +4,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniActivity AI - Acceso Cloud</title>
+    <title>UniActivity AI - Portal de Acceso</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
         :root {
             --indigo-brand: #4f46e5;
             --indigo-hover: #4338ca;
             --bg-app: #f8fafc;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
         }
 
         body {
             background-color: var(--bg-app);
-            font-family: system-ui, -apple-system, sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: var(--text-main);
         }
 
         .main-wrapper {
             width: 100%;
-            max-width: 1000px;
+            max-width: 960px;
             margin: 2rem;
         }
 
-        /* Tarjeta dual Premium */
+        /* Tarjeta principal con bordes finos de alta gama */
         .auth-card {
             background: #ffffff;
-            border: 1px solid rgba(226, 232, 240, 0.8);
+            border: 1px solid #e2e8f0;
             border-radius: 24px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.03), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
             overflow: hidden;
         }
 
-        /* Banner izquierdo de marca */
+        /* Banner izquierdo tipográfico */
         .brand-banner {
             background: linear-gradient(135deg, var(--indigo-brand) 0%, #3b82f6 100%);
             color: white;
-            padding: 3rem;
+            padding: 3.5rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
-        /* Switcher de Pestañas optimizado por GPU */
+        .tracking-tight {
+            letter-spacing: -0.025em;
+        }
+
+        .tracking-wide {
+            letter-spacing: 0.05em;
+        }
+
+        /* Contenedor de Pestañas */
         .nav-auth {
             background: #f1f5f9;
-            border-radius: 12px;
-            padding: 4px;
+            border-radius: 14px;
+            padding: 5px;
         }
 
         .nav-auth .nav-link {
-            color: #64748b;
+            color: var(--text-muted);
             font-weight: 600;
-            border-radius: 8px;
-            transition: all 0.2s ease;
+            font-size: 0.95rem;
+            border-radius: 10px;
+            transition: all 0.25s ease;
+            padding: 0.65rem 1rem;
         }
 
         .nav-auth .nav-link.active {
             background: white;
             color: var(--indigo-brand);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Inputs minimalistas premium */
+        label.form-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
         }
 
         .form-control,
         .form-select {
-            border-radius: 10px;
-            padding: 0.75rem 1rem;
-            border-color: #e2e8f0;
+            border-radius: 12px;
+            padding: 0.85rem 1.15rem;
+            border: 1.5px solid #e2e8f0;
+            background-color: #f8fafc;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            transition: all 0.2s ease;
         }
 
         .form-control:focus,
         .form-select:focus {
+            background-color: #ffffff;
             border-color: var(--indigo-brand);
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
         }
 
+        .form-control::placeholder {
+            color: #94a3b8;
+        }
+
+        /* Botones principales */
         .btn-brand {
             background-color: var(--indigo-brand);
             color: white;
             font-weight: 600;
-            border-radius: 10px;
-            padding: 0.75rem;
-            transition: background-color 0.2s;
+            border-radius: 12px;
+            padding: 0.85rem;
+            letter-spacing: 0.01em;
+            transition: all 0.2s;
         }
 
         .btn-brand:hover {
             background-color: var(--indigo-hover);
             color: white;
+            transform: translateY(-1px);
         }
 
-        /* Transición suave entre formularios */
-        .fade-panel {
-            transition: opacity 0.25s ease-in-out;
+        .btn-brand:active {
+            transform: translateY(0);
+        }
+
+        .btn-success-custom {
+            background-color: #0f766e;
+            color: white;
+            font-weight: 600;
+            border-radius: 12px;
+            padding: 0.85rem;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-success-custom:hover {
+            background-color: #115e59;
+            color: white;
+        }
+
+        /* CLASES PARA ANIMACIÓN DE TRANSICIÓN JS */
+        .anim-panel {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .anim-panel-hidden {
+            opacity: 0;
+            transform: translateY(12px);
         }
     </style>
 </head>
@@ -111,96 +171,84 @@
 
                 <div class="col-md-5 brand-banner d-none d-md-flex">
                     <div>
-                        <div class="d-flex align-items-center gap-2 mb-4">
-                            <i class="fa-solid fa-graduation-cap fs-2"></i>
-                            <span class="fs-4 fw-bold">UNACH Cloud</span>
+                        <div class="small tracking-wide text-uppercase fw-bold opacity-75 mb-4">
+                            Universidad Adventista de Chile
                         </div>
-                        <h2 class="fw-bold mb-3 fs-1">UniActivity AI</h2>
-                        <p class="opacity-75 small leading-relaxed">
-                            Plataforma de orquestación de actividades académicas de alta disponibilidad asistida por
-                            Inteligencia Artificial Generativa.
+                        <h1 class="fw-bold mb-3 tracking-tight" style="font-size: 2.75rem; line-height: 1.1;">
+                            UniActivity AI
+                        </h1>
+                        <p class="opacity-80 small" style="line-height: 1.6; font-size: 0.95rem;">
+                            Plataforma de orquestación académica de alta disponibilidad. Gestiona, planifica y evalúa
+                            con asistencia cognitiva determinista.
                         </p>
                     </div>
-                    <div class="small opacity-50">
-                        <i class="fa-solid fa-shield-halved me-1"></i> Entorno de Producción Seguro
+                    <div class="small opacity-75 fw-medium">
+                        Entorno de Producción Seguro
                     </div>
                 </div>
 
                 <div class="col-md-7 p-4 p-sm-5 bg-white">
-                    <div class="max-w-sm mx-auto">
+                    <div style="max-width: 380px; margin: 0 auto;">
 
-                        <ul class="nav nav-pills nav-fill nav-auth mb-4" id="pills-tab" role="tablist">
+                        <ul class="nav nav-pills nav-fill nav-auth mb-4" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="tab-login" onclick="switchTab('login')"
-                                    type="button">Ingresar</button>
+                                    type="button">Iniciar sesión</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="tab-register" onclick="switchTab('register')"
-                                    type="button">Crear Cuenta</button>
+                                    type="button">Crear cuenta</button>
                             </li>
                         </ul>
 
-                        <form id="loginForm" class="fade-panel">
+                        <form id="loginForm" class="anim-panel">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold small text-muted">USUARIO INSTITUCIONAL</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light border-end-0 text-muted"><i
-                                            class="fa-solid fa-user"></i></span>
-                                    <input type="text" id="loginUser" class="form-control border-start-0 ps-0"
-                                        placeholder="Ej: mmeza" required>
-                                </div>
+                                <label class="form-label">Usuario Institucional</label>
+                                <input type="text" id="loginUser" class="form-control" placeholder="Ej: mmeza" required>
                             </div>
 
                             <div class="mb-4">
-                                <label class="form-label fw-semibold small text-muted">CONTRASEÑA</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light border-end-0 text-muted"><i
-                                            class="fa-solid fa-lock"></i></span>
-                                    <input type="password" id="loginPass" class="form-control border-start-0 ps-0"
-                                        placeholder="••••••••" required>
-                                </div>
+                                <label class="form-label">Contraseña</label>
+                                <input type="password" id="loginPass" class="form-control" placeholder="••••••••"
+                                    required>
                             </div>
 
                             <button type="submit" class="btn btn-brand w-100 shadow-sm">
-                                <i class="fa-solid fa-right-to-bracket me-2"></i> Acceder al Portal
+                                Acceder al portal
                             </button>
                         </form>
 
-                        <form id="registerForm" class="fade-panel" style="display: none;">
+                        <form id="registerForm" class="anim-panel anim-panel-hidden" style="display: none;">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold small text-muted">NUEVO USUARIO</label>
-                                <input type="text" id="regUser" class="form-control"
-                                    placeholder="Ingrese nombre de usuario" required>
+                                <label class="form-label">Nuevo Usuario</label>
+                                <input type="text" id="regUser" class="form-control" placeholder="Nombre de usuario"
+                                    required>
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label fw-semibold small text-muted">CONTRASEÑA</label>
+                                <label class="form-label">Contraseña</label>
                                 <input type="password" id="regPass" class="form-control"
-                                    placeholder="Cree una contraseña segura" required>
+                                    placeholder="Crea una contraseña segura" required>
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label fw-semibold small text-muted">TIPO DE PERFIL ACADÉMICO</label>
-                                <select id="regRole" class="form-select fw-medium text-dark"
-                                    onchange="checkRoleSecurity()">
-                                    <option value="Estudiante" selected>👨‍🎓 Estudiante (Acceso estándar)</option>
-                                    <option value="Admin">👨‍🏫 Administrador / Docente (Requiere PIN)</option>
+                                <label class="form-label">Perfil Académico</label>
+                                <select id="regRole" class="form-select fw-medium" onchange="checkRoleSecurity()">
+                                    <option value="Estudiante" selected>Estudiante (Acceso estándar)</option>
+                                    <option value="Admin">Administrador / Docente (Requiere PIN)</option>
                                 </select>
                             </div>
 
-                            <div class="mb-4 p-3 bg-indigo-subtle border border-indigo-subtle rounded-3"
-                                id="pinSecurityBox" style="display: none;">
-                                <label class="form-label fw-bold small text-indigo m-0 mb-1">
-                                    <i class="fa-solid fa-key me-1"></i> PIN DE AUTORIZACIÓN DOCENTE
-                                </label>
-                                <input type="password" id="teacherPinInput" class="form-control form-control-sm"
-                                    placeholder="Ingrese el código secreto">
-                                <small class="text-secondary d-block mt-1" style="font-size: 0.75rem;">Para evitar
-                                    suplantación, solicite el PIN en Jefatura.</small>
+                            <div class="mb-4 p-3 bg-light border rounded-3" id="pinSecurityBox" style="display: none;">
+                                <label class="form-label text-dark fw-bold">PIN de Autorización Docente</label>
+                                <input type="password" id="teacherPinInput" class="form-control"
+                                    placeholder="Código de validación">
+                                <small class="text-muted d-block mt-1" style="font-size: 0.75rem;">Solicite el código de
+                                    perfil docente en Jefatura de Carrera.</small>
                             </div>
 
-                            <button type="submit" class="btn btn-success w-100 fw-bold py-2 rounded-3 shadow-sm">
-                                <i class="fa-solid fa-user-plus me-2"></i> Registrar y Validar
+                            <button type="submit" class="btn btn-success-custom w-100 shadow-sm">
+                                Registrar y verificar
                             </button>
                         </form>
 
@@ -215,9 +263,9 @@
         <div id="authToast" class="toast align-items-center text-white border-0 shadow-lg" role="alert"
             aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
-                <div class="toast-body fw-medium d-flex align-items-center gap-2" id="toastMsg"></div>
+                <div class="toast-body fw-medium px-3 py-2" id="toastMsg"></div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                    aria-label="Close"></button>
+                    aria-label="Cerrar"></button>
             </div>
         </div>
     </div>
@@ -226,19 +274,44 @@
 
     <script>
         const API_URL = '/api/auth';
-        const SECRET_TEACHER_PIN = "DEV-UNACH-2026"; // PIN de validación docente
+        const SECRET_TEACHER_PIN = "DEV-UNACH-2026";
+        let isAnimating = false; // Candado anti-spam de clics
 
-        // Alternador de pestañas sin tirones
+        // --- MOTOR DE TRANSICIÓN ANIMADA ---
         function switchTab(target) {
+            if (isAnimating) return;
+
             const isLogin = target === 'login';
+            const loginForm = document.getElementById('loginForm');
+            const regForm = document.getElementById('registerForm');
+
+            if ((isLogin && loginForm.style.display === 'block') ||
+                (!isLogin && regForm.style.display === 'block')) return;
+
+            isAnimating = true;
+
+            // Actualizar estado visual de las pestañas
             document.getElementById('tab-login').className = `nav-link ${isLogin ? 'active' : ''}`;
             document.getElementById('tab-register').className = `nav-link ${!isLogin ? 'active' : ''}`;
 
-            document.getElementById('loginForm').style.display = isLogin ? 'block' : 'none';
-            document.getElementById('registerForm').style.display = !isLogin ? 'block' : 'none';
+            const outgoingForm = isLogin ? regForm : loginForm;
+            const incomingForm = isLogin ? loginForm : regForm;
+
+            // Paso 1: Desvanecer el actual hacia abajo
+            outgoingForm.classList.add('anim-panel-hidden');
+
+            setTimeout(() => {
+                outgoingForm.style.display = 'none';
+                incomingForm.style.display = 'block';
+
+                // Paso 2: Reflow del DOM y deslizar el nuevo hacia arriba
+                requestAnimationFrame(() => {
+                    incomingForm.classList.remove('anim-panel-hidden');
+                    setTimeout(() => { isAnimating = false; }, 200); // Liberar candado
+                });
+            }, 200);
         }
 
-        // Desplegar u ocultar el candado de PIN Docente
         function checkRoleSecurity() {
             const role = document.getElementById('regRole').value;
             const pinBox = document.getElementById('pinSecurityBox');
@@ -247,7 +320,7 @@
             if (role === 'Admin') {
                 pinBox.style.display = 'block';
                 pinInput.required = true;
-                showToast("Atención: El perfil Docente requiere verificación por PIN", "bg-warning text-dark", "fa-shield-halved");
+                showToast("El perfil Docente requiere código de verificación", "bg-dark");
             } else {
                 pinBox.style.display = 'none';
                 pinInput.required = false;
@@ -255,26 +328,23 @@
             }
         }
 
-        // Disparador de Toasts elegantes
-        function showToast(msg, bgClass = 'bg-danger', icon = 'fa-circle-exclamation') {
+        function showToast(msg, bgClass = 'bg-danger') {
             const toastEl = document.getElementById('authToast');
             toastEl.className = `toast align-items-center text-white border-0 shadow-lg ${bgClass}`;
-            document.getElementById('toastMsg').innerHTML = `<i class="fa-solid ${icon} fs-5"></i> ${msg}`;
+            document.getElementById('toastMsg').innerText = msg;
             bootstrap.Toast.getOrCreateInstance(toastEl).show();
         }
 
-        // --- LOGICA DE REGISTRO CON CANDADO ---
+        // --- ENVIAR REGISTRO ---
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const username = document.getElementById('regUser').value.trim();
             const password = document.getElementById('regPass').value;
             const role = document.getElementById('regRole').value;
 
-            // VALIDACIÓN DE CIBERSEGURIDAD EN EL FRONTEND
             if (role === 'Admin') {
-                const userPin = document.getElementById('teacherPinInput').value;
-                if (userPin !== SECRET_TEACHER_PIN) {
-                    showToast("PIN Docente Incorrecto. Intento de escalación bloqueado.", "bg-danger", "fa-hand");
+                if (document.getElementById('teacherPinInput').value !== SECRET_TEACHER_PIN) {
+                    showToast("Código de autorización docente denegado");
                     return;
                 }
             }
@@ -288,15 +358,15 @@
                 const data = await res.json();
 
                 if (res.ok) {
-                    showToast("¡Cuenta creada exitosamente! Ahora puedes iniciar sesión", "bg-success", "fa-check");
+                    showToast("Cuenta creada con éxito. Inicia sesión.", "bg-success");
                     document.getElementById('registerForm').reset();
                     checkRoleSecurity();
                     switchTab('login');
                 } else { showToast(data.message || "El usuario ya existe"); }
-            } catch (err) { showToast("Error de comunicación con el servidor cloud"); }
+            } catch (err) { showToast("Error de conexión con el servidor"); }
         });
 
-        // --- LOGICA DE INICIO DE SESIÓN ---
+        // --- ENVIAR LOGIN ---
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const username = document.getElementById('loginUser').value.trim();
@@ -315,7 +385,7 @@
                     localStorage.setItem('role', data.role);
                     window.location.href = '/dashboard.html';
                 } else { showToast(data.message || "Credenciales incorrectas"); }
-            } catch (err) { showToast("Error al intentar conectar con la base de datos"); }
+            } catch (err) { showToast("Error de conexión con el servidor"); }
         });
     </script>
 </body>
