@@ -2,18 +2,16 @@ const db = require('../database/db');
 
 // Crear Actividad
 exports.createActivity = (req, res) => {
-    const { title, description, date } = req.body;
-    if (!title || !description || !date) {
+    const { title, description, start_date, end_date } = req.body;
+    if (!title || !description || !start_date || !end_date) {
         return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
     }
 
     db.run(
-        `INSERT INTO activities (title, description, date) VALUES (?, ?, ?)`,
-        [title, description, date],
+        `INSERT INTO activities (title, description, start_date, end_date, status) VALUES (?, ?, ?, ?, 'En curso')`,
+        [title, description, start_date, end_date],
         function (err) {
-            if (err) {
-                return res.status(500).json({ message: 'Error al crear la actividad.' });
-            }
+            if (err) return res.status(500).json({ message: 'Error al crear la actividad.' });
             res.status(201).json({ message: 'Actividad creada con éxito.', activityId: this.lastID });
         }
     );
@@ -32,18 +30,13 @@ exports.getAllActivities = (req, res) => {
 // Modificar Actividad
 exports.updateActivity = (req, res) => {
     const { id } = req.params;
-    const { title, description, date } = req.body;
+    const { title, description, start_date, end_date, status } = req.body;
 
     db.run(
-        `UPDATE activities SET title = ?, description = ?, date = ? WHERE id = ?`,
-        [title, description, date, id],
+        `UPDATE activities SET title = ?, description = ?, start_date = ?, end_date = ?, status = ? WHERE id = ?`,
+        [title, description, start_date, end_date, status, id],
         function (err) {
-            if (err) {
-                return res.status(500).json({ message: 'Error al actualizar la actividad.' });
-            }
-            if (this.changes === 0) {
-                return res.status(404).json({ message: 'Actividad no encontrada.' });
-            }
+            if (err) return res.status(500).json({ message: 'Error al actualizar.' });
             res.json({ message: 'Actividad modificada con éxito.' });
         }
     );

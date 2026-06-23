@@ -383,9 +383,10 @@
                 if (res.ok && data.token) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('role', data.role);
+                    localStorage.setItem('username', username); // <--- AÑADIMOS ESTA LÍNEA MÁGICA
                     window.location.href = '/dashboard.html';
                 } else { showToast(data.message || "Credenciales incorrectas"); }
-            } catch (err) { showToast("Error de conexión con el servidor"); }
+            } catch (err) { showToast("Error al intentar conectar con la base de datos"); }
         });
     </script>
 </body>
