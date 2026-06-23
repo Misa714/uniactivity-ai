@@ -18,7 +18,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
                 role TEXT
             )`);
 
-            // 2. Tabla de Actividades Universitarias (Esquema final con rango de fechas y estado)
+            // 2. Tabla de Actividades Universitarias
             db.run(`CREATE TABLE IF NOT EXISTS activities (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title TEXT,
@@ -28,10 +28,22 @@ const db = new sqlite3.Database(dbPath, (err) => {
                 status TEXT DEFAULT 'En curso'
             )`);
 
-            // Parches de migración en caliente por si la base de datos ya existía en el contenedor
-            db.run("ALTER TABLE activities ADD COLUMN start_date TEXT", () => { });
-            db.run("ALTER TABLE activities ADD COLUMN end_date TEXT", () => { });
-            db.run("ALTER TABLE activities ADD COLUMN status TEXT DEFAULT 'En curso'", () => { });
+            // Parches de migración controlados (Capturan el error de forma silenciosa si la columna ya existe)
+            db.run("ALTER TABLE activities ADD COLUMN start_date TEXT", (err) => {
+                if (err && !err.message.includes("duplicate column name")) {
+                    console.log("Aviso migración start_date:", err.message);
+                }
+            });
+            db.run("ALTER TABLE activities ADD COLUMN end_date TEXT", (err) => {
+                if (err && !err.message.includes("duplicate column name")) {
+                    console.log("Aviso migración end_date:", err.message);
+                }
+            });
+            db.run("ALTER TABLE activities ADD COLUMN status TEXT DEFAULT 'En curso'", (err) => {
+                if (err && !err.message.includes("duplicate column name")) {
+                    console.log("Aviso migración status:", err.message);
+                }
+            });
 
             // 3. Tabla de Inscripciones (Gestión de Participantes, Asistencia y Seguimiento)
             db.run(`CREATE TABLE IF NOT EXISTS inscriptions (
