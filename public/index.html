@@ -4,26 +4,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniActivity AI - Portal de Acceso</title>
+    <title>UniActivity AI · Portal de Acceso</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         :root {
-            --indigo-brand: #4f46e5;
-            --indigo-hover: #4338ca;
-            --bg-app: #f8fafc;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
+            --navy-900: #001a33;
+            --navy-800: #002244;
+            --navy-700: #003366;
+            --navy-600: #004080;
+            --navy-500: #00509e;
+            --navy-400: #0066cc;
+            --navy-300: #3388dd;
+            --navy-200: #80b3ee;
+            --navy-100: #cce0ff;
+            --navy-50: #eef4ff;
+            --surface: #ffffff;
+            --surface-alt: #f8fafc;
+            --border-light: #e9eef3;
+            --border-medium: #d4dce6;
+            --text-primary: #0b1c2e;
+            --text-secondary: #475569;
+            --text-muted: #7b8ca0;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
-            background-color: var(--bg-app);
+            background-color: #f5f8fc;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-main);
+            color: var(--text-primary);
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
         }
 
         .main-wrapper {
@@ -34,16 +53,16 @@
 
         /* Tarjeta principal con bordes finos de alta gama */
         .auth-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
+            background: var(--surface);
+            border: 1px solid var(--border-light);
             border-radius: 24px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.03), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 20px 40px rgba(0, 51, 102, 0.08);
             overflow: hidden;
         }
 
-        /* Banner izquierdo tipográfico */
+        /* Banner izquierdo corporativo Navy */
         .brand-banner {
-            background: linear-gradient(135deg, var(--indigo-brand) 0%, #3b82f6 100%);
+            background: linear-gradient(135deg, var(--navy-800) 0%, var(--navy-500) 100%);
             color: white;
             padding: 3.5rem;
             display: flex;
@@ -61,9 +80,10 @@
 
         /* Contenedor de Pestañas */
         .nav-auth {
-            background: #f1f5f9;
+            background: var(--navy-50);
             border-radius: 14px;
             padding: 5px;
+            border: 1px solid var(--border-light);
         }
 
         .nav-auth .nav-link {
@@ -71,14 +91,18 @@
             font-weight: 600;
             font-size: 0.95rem;
             border-radius: 10px;
-            transition: all 0.25s ease;
+            transition: all var(--transition);
             padding: 0.65rem 1rem;
+        }
+
+        .nav-auth .nav-link:hover {
+            color: var(--navy-600);
         }
 
         .nav-auth .nav-link.active {
             background: white;
-            color: var(--indigo-brand);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            color: var(--navy-700);
+            box-shadow: 0 2px 8px rgba(0, 51, 102, 0.08);
         }
 
         /* Inputs minimalistas premium */
@@ -95,18 +119,19 @@
         .form-select {
             border-radius: 12px;
             padding: 0.85rem 1.15rem;
-            border: 1.5px solid #e2e8f0;
-            background-color: #f8fafc;
+            border: 1.5px solid var(--border-light);
+            background-color: var(--surface-alt);
             font-size: 0.95rem;
-            color: var(--text-main);
-            transition: all 0.2s ease;
+            color: var(--text-primary);
+            transition: all var(--transition);
+            outline: none;
         }
 
         .form-control:focus,
         .form-select:focus {
-            background-color: #ffffff;
-            border-color: var(--indigo-brand);
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+            background-color: white;
+            border-color: var(--navy-500);
+            box-shadow: 0 0 0 4px rgba(0, 51, 102, 0.06);
         }
 
         .form-control::placeholder {
@@ -115,38 +140,46 @@
 
         /* Botones principales */
         .btn-brand {
-            background-color: var(--indigo-brand);
+            background-color: var(--navy-700);
             color: white;
-            font-weight: 600;
+            font-weight: 700;
             border-radius: 12px;
             padding: 0.85rem;
             letter-spacing: 0.01em;
-            transition: all 0.2s;
+            transition: all var(--transition);
+            border: none;
         }
 
         .btn-brand:hover {
-            background-color: var(--indigo-hover);
+            background-color: var(--navy-600);
             color: white;
+            box-shadow: 0 8px 20px rgba(0, 51, 102, 0.2);
             transform: translateY(-1px);
         }
 
         .btn-brand:active {
-            transform: translateY(0);
+            transform: translateY(0) scale(0.98);
         }
 
         .btn-success-custom {
-            background-color: #0f766e;
+            background-color: #0f6e4a;
             color: white;
-            font-weight: 600;
+            font-weight: 700;
             border-radius: 12px;
             padding: 0.85rem;
-            transition: all 0.2s;
+            transition: all var(--transition);
             border: none;
         }
 
         .btn-success-custom:hover {
-            background-color: #115e59;
+            background-color: #0c593c;
             color: white;
+            box-shadow: 0 8px 20px rgba(15, 110, 74, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .btn-success-custom:active {
+            transform: translateY(0) scale(0.98);
         }
 
         /* CLASES PARA ANIMACIÓN DE TRANSICIÓN JS */
@@ -159,6 +192,34 @@
         .anim-panel-hidden {
             opacity: 0;
             transform: translateY(12px);
+        }
+
+        /* Toast de notificaciones minimalista */
+        .toast-mini {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            background: white;
+            border-left: 4px solid var(--navy-700);
+            padding: 0.9rem 1.6rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+            font-size: 0.85rem;
+            z-index: 9999;
+            animation: slideToast 0.35s ease;
+        }
+
+        @keyframes slideToast {
+            from {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
@@ -204,7 +265,8 @@
                         <form id="loginForm" class="anim-panel">
                             <div class="mb-3">
                                 <label class="form-label">Usuario Institucional</label>
-                                <input type="text" id="loginUser" class="form-control" placeholder="Ej: mmeza" required>
+                                <input type="text" id="loginUser" class="form-control" placeholder="Ej: Usuario"
+                                    required>
                             </div>
 
                             <div class="mb-4">
@@ -259,23 +321,23 @@
         </div>
     </div>
 
-    <div class="toast-container position-fixed top-0 end-0 p-4" style="z-index: 9999;">
-        <div id="authToast" class="toast align-items-center text-white border-0 shadow-lg" role="alert"
-            aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body fw-medium px-3 py-2" id="toastMsg"></div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                    aria-label="Cerrar"></button>
-            </div>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         const API_URL = '/api/auth';
         const SECRET_TEACHER_PIN = "DEV-UNACH-2026";
-        let isAnimating = false; // Candado anti-spam de clics
+        let isAnimating = false;
+
+        function showToast(msg, type = 'error') {
+            const old = document.querySelector('.toast-mini');
+            if (old) old.remove();
+            const toast = document.createElement('div');
+            toast.className = 'toast-mini';
+            toast.style.borderLeftColor = type === 'success' ? '#0f6e4a' : (type === 'error' ? '#c1292e' : '#003366');
+            toast.innerText = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = '0.3s'; setTimeout(() => toast.remove(), 300); }, 3000);
+        }
 
         // --- MOTOR DE TRANSICIÓN ANIMADA ---
         function switchTab(target) {
@@ -290,24 +352,21 @@
 
             isAnimating = true;
 
-            // Actualizar estado visual de las pestañas
             document.getElementById('tab-login').className = `nav-link ${isLogin ? 'active' : ''}`;
             document.getElementById('tab-register').className = `nav-link ${!isLogin ? 'active' : ''}`;
 
             const outgoingForm = isLogin ? regForm : loginForm;
             const incomingForm = isLogin ? loginForm : regForm;
 
-            // Paso 1: Desvanecer el actual hacia abajo
             outgoingForm.classList.add('anim-panel-hidden');
 
             setTimeout(() => {
                 outgoingForm.style.display = 'none';
                 incomingForm.style.display = 'block';
 
-                // Paso 2: Reflow del DOM y deslizar el nuevo hacia arriba
                 requestAnimationFrame(() => {
                     incomingForm.classList.remove('anim-panel-hidden');
-                    setTimeout(() => { isAnimating = false; }, 200); // Liberar candado
+                    setTimeout(() => { isAnimating = false; }, 200);
                 });
             }, 200);
         }
@@ -320,19 +379,12 @@
             if (role === 'Admin') {
                 pinBox.style.display = 'block';
                 pinInput.required = true;
-                showToast("El perfil Docente requiere código de verificación", "bg-dark");
+                showToast("El perfil Docente requiere código de verificación", "info");
             } else {
                 pinBox.style.display = 'none';
                 pinInput.required = false;
                 pinInput.value = '';
             }
-        }
-
-        function showToast(msg, bgClass = 'bg-danger') {
-            const toastEl = document.getElementById('authToast');
-            toastEl.className = `toast align-items-center text-white border-0 shadow-lg ${bgClass}`;
-            document.getElementById('toastMsg').innerText = msg;
-            bootstrap.Toast.getOrCreateInstance(toastEl).show();
         }
 
         // --- ENVIAR REGISTRO ---
@@ -344,7 +396,7 @@
 
             if (role === 'Admin') {
                 if (document.getElementById('teacherPinInput').value !== SECRET_TEACHER_PIN) {
-                    showToast("Código de autorización docente denegado");
+                    showToast("Código de autorización docente denegado", "error");
                     return;
                 }
             }
@@ -358,12 +410,12 @@
                 const data = await res.json();
 
                 if (res.ok) {
-                    showToast("Cuenta creada con éxito. Inicia sesión.", "bg-success");
+                    showToast("Cuenta creada con éxito. Inicia sesión.", "success");
                     document.getElementById('registerForm').reset();
                     checkRoleSecurity();
                     switchTab('login');
-                } else { showToast(data.message || "El usuario ya existe"); }
-            } catch (err) { showToast("Error de conexión con el servidor"); }
+                } else { showToast(data.message || "El usuario ya existe", "error"); }
+            } catch (err) { showToast("Error de conexión con el servidor cloud", "error"); }
         });
 
         // --- ENVIAR LOGIN ---
@@ -383,10 +435,10 @@
                 if (res.ok && data.token) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('role', data.role);
-                    localStorage.setItem('username', username); // <--- AÑADIMOS ESTA LÍNEA MÁGICA
+                    localStorage.setItem('username', username);
                     window.location.href = '/dashboard.html';
-                } else { showToast(data.message || "Credenciales incorrectas"); }
-            } catch (err) { showToast("Error al intentar conectar con la base de datos"); }
+                } else { showToast(data.message || "Credenciales incorrectas", "error"); }
+            } catch (err) { showToast("Error al intentar conectar con la base de datos", "error"); }
         });
     </script>
 </body>

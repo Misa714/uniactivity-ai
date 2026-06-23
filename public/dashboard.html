@@ -4,250 +4,456 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniActivity AI - Espacio de Trabajo</title>
+    <title>UniActivity AI · Espacio de Trabajo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <style>
         :root {
-            --indigo-brand: #4f46e5;
-            --indigo-hover: #4338ca;
-            --bg-app: #f8fafc;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
+            --navy-900: #001a33;
+            --navy-800: #002244;
+            --navy-700: #003366;
+            --navy-600: #004080;
+            --navy-500: #00509e;
+            --navy-400: #0066cc;
+            --navy-300: #3388dd;
+            --navy-200: #80b3ee;
+            --navy-100: #cce0ff;
+            --navy-50: #eef4ff;
+            --surface: #ffffff;
+            --surface-alt: #f8fafc;
+            --border-light: #e9eef3;
+            --border-medium: #d4dce6;
+            --text-primary: #0b1c2e;
+            --text-secondary: #475569;
+            --text-muted: #7b8ca0;
+            --shadow-card: 0 4px 16px rgba(0, 51, 102, 0.05);
+            --shadow-hover: 0 12px 28px rgba(0, 51, 102, 0.08);
+            --radius-sm: 12px;
+            --radius-md: 18px;
+            --radius-lg: 22px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
-            background-color: var(--bg-app);
+            background: #f5f8fc;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            color: var(--text-main);
-            overflow-x: hidden;
+            color: var(--text-primary);
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            letter-spacing: -0.01em;
+            line-height: 1.5;
         }
 
-        /* Navbar Minimalista Premium */
-        .navbar-custom {
-            background: linear-gradient(135deg, var(--indigo-brand) 0%, #3b82f6 100%);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        /* ===== NAVBAR ===== */
+        .navbar {
+            background: var(--navy-700);
+            padding: 0.9rem 0;
+            box-shadow: 0 4px 20px rgba(0, 51, 102, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: slideDown 0.5s ease both;
         }
 
-        .tracking-tight {
-            letter-spacing: -0.025em;
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .tracking-wide {
-            letter-spacing: 0.05em;
+        .brand {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: white;
+            text-decoration: none;
         }
 
-        /* Tarjetas con bordes ultra definidos */
-        .clean-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 20px;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 0.35rem 1.2rem;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
         }
 
-        .clean-card:hover {
-            border-color: #cbd5e1;
+        .user-detail {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            line-height: 1.2;
         }
 
-        /* Tipografías de etiquetas */
-        .label-xs {
-            font-size: 0.70rem;
-            letter-spacing: 0.08em;
+        .user-label {
+            font-size: 0.6rem;
             text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.7;
+            color: white;
+        }
+
+        .user-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        .role-badge {
+            background: white;
+            color: var(--navy-700);
+            font-weight: 700;
+            font-size: 0.7rem;
+            padding: 0.25rem 0.8rem;
+            border-radius: 20px;
+        }
+
+        .btn-logout {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: white;
+            font-weight: 600;
+            font-size: 0.8rem;
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* ===== CARDS ===== */
+        .card-clean {
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 1.8rem;
+            box-shadow: var(--shadow-card);
+            transition: all var(--transition);
+        }
+
+        .card-clean:hover {
+            border-color: var(--border-medium);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-3px);
+        }
+
+        .animate-entry {
+            animation: fadeUp 0.5s ease both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== FORM ELEMENTS ===== */
+        .field-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
             font-weight: 700;
             color: var(--text-muted);
             margin-bottom: 0.4rem;
             display: block;
         }
 
-        .form-control,
-        .form-select {
-            border-radius: 12px;
-            padding: 0.75rem 1rem;
-            border: 1.5px solid #e2e8f0;
-            background-color: #f8fafc;
+        .input-field {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1.5px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            background: var(--surface-alt);
             font-size: 0.95rem;
+            font-weight: 500;
+            transition: all var(--transition);
+            outline: none;
+            color: var(--text-primary);
         }
 
-        .form-control:focus,
-        .form-select:focus {
-            background-color: #ffffff;
-            border-color: var(--indigo-brand);
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        .input-field:focus {
+            border-color: var(--navy-500);
+            box-shadow: 0 0 0 4px rgba(0, 51, 102, 0.06);
+            background: white;
         }
 
-        /* Botones de texto estilo Vercel */
-        .btn-text {
+        textarea.input-field {
+            resize: vertical;
+            min-height: 95px;
+            line-height: 1.6;
+        }
+
+        .btn-primary-custom {
+            background: var(--navy-700);
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0.8rem;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition);
+            width: 100%;
+        }
+
+        .btn-primary-custom:hover {
+            background: var(--navy-600);
+            box-shadow: 0 8px 20px rgba(0, 51, 102, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary-custom:active {
+            transform: scale(0.97);
+        }
+
+        .btn-secondary-custom {
+            background: white;
+            border: 1.5px solid var(--border-medium);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.8rem;
+            padding: 0.55rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all var(--transition);
+            width: 100%;
+        }
+
+        .btn-secondary-custom:hover {
+            border-color: var(--navy-300);
+            color: var(--navy-700);
+            background: var(--navy-50);
+        }
+
+        .btn-text-link {
             background: none;
             border: none;
+            color: var(--navy-600);
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             padding: 0.4rem 0.8rem;
-            border-radius: 8px;
-            transition: all 0.15s;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all var(--transition);
         }
 
-        .btn-text-edit {
-            color: #0284c7;
-        }
-
-        .btn-text-edit:hover {
-            background-color: #e0f2fe;
+        .btn-text-link:hover {
+            background: var(--navy-50);
+            color: var(--navy-800);
         }
 
         .btn-text-danger {
-            color: #dc2626;
+            color: #c1292e;
         }
 
         .btn-text-danger:hover {
-            background-color: #fee2e2;
+            background: #fee9e9;
         }
 
-        .btn-text-info {
-            color: #4f46e5;
-        }
-
-        .btn-text-info:hover {
-            background-color: #e0e7ff;
-        }
-
-        .btn-brand {
-            background-color: var(--indigo-brand);
+        .btn-inscribe {
+            background: var(--navy-700);
             color: white;
-            font-weight: 600;
-            border-radius: 12px;
-            padding: 0.80rem;
-            transition: all 0.2s;
-        }
-
-        .btn-brand:hover {
-            background-color: var(--indigo-hover);
-            color: white;
-        }
-
-        /* Badges de estado */
-        .status-badge {
-            font-size: 0.75rem;
             font-weight: 700;
-            padding: 0.35rem 0.8rem;
+            font-size: 0.85rem;
+            padding: 0.6rem 1.8rem;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .btn-inscribe:hover {
+            background: var(--navy-600);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 51, 102, 0.3);
+        }
+
+        /* ===== STATUS BADGES ===== */
+        .badge-status {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.3rem 0.9rem;
             border-radius: 20px;
-            letter-spacing: 0.03em;
             text-transform: uppercase;
         }
 
-        .status-active {
-            background-color: #dcfce7;
-            color: #166534;
-            border: 1px solid #bbf7d0;
+        .badge-active {
+            background: #e6f7ec;
+            color: #0b5e3c;
+            border: 1px solid #b7e4cf;
         }
 
-        .status-finished {
-            background-color: #f1f5f9;
+        .badge-finished {
+            background: #f1f5f9;
             color: #64748b;
             border: 1px solid #e2e8f0;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-content {
+            border: none;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .modal-header-custom {
+            background: var(--navy-700);
+            color: white;
+            padding: 1.2rem 1.8rem;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        }
+
+        .table-custom th {
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            border-bottom: 2px solid var(--border-light);
+        }
+
+        /* ===== TOAST ===== */
+        .toast-mini {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: white;
+            border-left: 4px solid var(--navy-700);
+            padding: 0.9rem 1.6rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+            font-size: 0.85rem;
+            z-index: 9999;
+            animation: slideToast 0.35s ease;
+        }
+
+        @keyframes slideToast {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 
 <body>
-
-    <nav class="navbar navbar-dark navbar-custom py-3 mb-4">
+    <nav class="navbar">
         <div class="container">
-            <span class="navbar-brand mb-0 h4 fw-bold tracking-tight">UniActivity AI</span>
+            <span class="brand">UniActivity AI</span>
             <div class="d-flex align-items-center gap-3">
-                <div class="text-end text-white">
-                    <small class="d-block opacity-75" style="font-size: 0.70rem; letter-spacing: 0.05em;">CONECTADO
-                        COMO</small>
-                    <span class="fw-bold tracking-tight" id="userNameDisplay">Cargando...</span>
-                    <span class="badge bg-white text-dark ms-2 fw-bold" style="font-size:0.70rem;"
-                        id="userRoleBadge">ROL</span>
+                <div class="user-info">
+                    <div class="user-detail">
+                        <span class="user-label">Conectado</span>
+                        <span class="user-name" id="userNameDisplay">Cargando...</span>
+                    </div>
+                    <span class="role-badge" id="userRoleBadge">ROL</span>
                 </div>
-                <button class="btn btn-sm btn-light fw-bold ms-2" onclick="logout()">Salir</button>
+                <button class="btn-logout" onclick="logout()">Salir</button>
             </div>
         </div>
     </nav>
 
-    <div class="container">
-        <div class="row">
-
-            <div class="col-lg-4 col-md-5 mb-4" id="adminPanel" style="display: none;">
-                <div class="clean-card p-4">
+    <div class="container py-4">
+        <div class="row g-4">
+            <!-- Panel de Administración (Docentes) -->
+            <div class="col-lg-4 col-md-5" id="adminPanel" style="display: none;">
+                <div class="card-clean animate-entry">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h5 class="fw-bold m-0 tracking-tight" id="formTitle">Publicar actividad</h5>
-                        <button class="btn-text btn-text-danger p-0" id="btnCancelEdit" onclick="cancelEdit()"
+                        <h5 class="fw-bold m-0" style="color:var(--navy-700);" id="formTitle">Publicar actividad</h5>
+                        <button class="btn-text-link btn-text-danger p-0" id="btnCancelEdit" onclick="cancelEdit()"
                             style="display:none;">Cancelar</button>
                     </div>
-
                     <form id="activityForm">
                         <div class="mb-3">
-                            <span class="label-xs">Título de la actividad</span>
-                            <input type="text" id="actTitle" class="form-control"
-                                placeholder="Ej: Defensa de Portafolio" required>
-                            <button type="button" class="btn btn-sm btn-light w-100 mt-2 fw-semibold text-muted border"
-                                onclick="magicAI()">
-                                Generar descripción con IA
-                            </button>
+                            <span class="field-label">Título de la actividad</span>
+                            <input type="text" id="actTitle" class="input-field" placeholder="Ej: Defensa de Portafolio"
+                                required>
+                            <button type="button" class="btn-secondary-custom mt-2" onclick="magicAI()">Generar
+                                descripción con IA</button>
                         </div>
-
                         <div class="mb-3">
-                            <span class="label-xs">Descripción y competencias</span>
-                            <textarea id="actDesc" class="form-control" rows="3" placeholder="Detalles de evaluación..."
-                                required></textarea>
+                            <span class="field-label">Descripción y competencias</span>
+                            <textarea id="actDesc" class="input-field" rows="3"
+                                placeholder="Detalles de evaluación, rúbrica..." required></textarea>
                         </div>
-
                         <div class="row g-2 mb-3">
                             <div class="col-6">
-                                <span class="label-xs">Fecha Inicio</span>
-                                <input type="date" id="actStartDate" class="form-control" required>
+                                <span class="field-label">Fecha Inicio</span>
+                                <input type="date" id="actStartDate" class="input-field" required>
                             </div>
                             <div class="col-6">
-                                <span class="label-xs">Fecha Término</span>
-                                <input type="date" id="actEndDate" class="form-control" required>
+                                <span class="field-label">Fecha Término</span>
+                                <input type="date" id="actEndDate" class="input-field" required>
                             </div>
                         </div>
-
                         <div class="mb-4" id="statusBox" style="display: none;">
-                            <span class="label-xs">Estado de ejecución</span>
-                            <select id="actStatus" class="form-select fw-semibold">
-                                <option value="En curso">En curso (Activa)</option>
+                            <span class="field-label">Estado</span>
+                            <select id="actStatus" class="input-field">
+                                <option value="En curso" selected>En curso (Activa)</option>
                                 <option value="Finalizada">Finalizada (Cerrada)</option>
                             </select>
                         </div>
-
-                        <button type="submit" class="btn btn-brand w-100" id="btnSubmitForm">Publicar ahora</button>
+                        <button type="submit" class="btn-primary-custom" id="btnSubmitForm">Publicar ahora</button>
                     </form>
                 </div>
             </div>
 
+            <!-- Lista Dinámica de Actividades -->
             <div id="listPanel" class="col-lg-8 col-md-7">
                 <div class="d-flex justify-content-between align-items-center mb-3 px-1">
-                    <h6 class="fw-bold text-muted m-0 tracking-wide text-uppercase" style="font-size: 0.80rem;">
-                        Actividades en el sistema</h6>
-                    <button class="btn-text btn-text-edit" onclick="loadActivities()">Actualizar vista</button>
+                    <span class="fw-bold text-uppercase"
+                        style="font-size:0.75rem;letter-spacing:0.07em;color:var(--text-muted);">Actividades en el
+                        sistema</span>
+                    <button class="btn-text-link p-0" onclick="loadActivities()">Actualizar vista</button>
                 </div>
                 <div id="activitiesList" class="row g-3"></div>
             </div>
-
         </div>
     </div>
 
-    <div class="modal fade" id="modalAlumnos" tabindex="-1">
+    <!-- Modal Alumnos -->
+    <div class="modal fade" id="modalAlumnos" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg rounded-4">
-                <div class="modal-header bg-dark text-white p-4">
-                    <h6 class="modal-title fw-bold tracking-wide text-uppercase" style="font-size:0.85rem;">Control de
-                        asistencia: <span id="modalActTitle" class="text-info"></span></h6>
+            <div class="modal-content">
+                <div class="modal-header-custom d-flex justify-content-between align-items-center">
+                    <h6 class="modal-title fw-bold text-uppercase mb-0" style="font-size:0.8rem;letter-spacing:0.05em;">
+                        Control de asistencia · <span id="modalActTitle" style="color:#b9d5ff;"></span>
+                    </h6>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <table class="table align-middle">
+                    <table class="table table-custom align-middle">
                         <thead>
-                            <tr class="text-muted" style="font-size:0.75rem;">
-                                <th>ALUMNO INSCRITO</th>
-                                <th>ASISTENCIA</th>
-                                <th>ESTADO ACADÉMICO</th>
-                                <th>ACCIÓN</th>
+                            <tr>
+                                <th>Alumno inscrito</th>
+                                <th>Asistencia</th>
+                                <th>Seguimiento</th>
+                                <th>Acción</th>
                             </tr>
                         </thead>
                         <tbody id="tablaAlumnosBody"></tbody>
@@ -258,12 +464,12 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
         const token = localStorage.getItem('token');
         const role = localStorage.getItem('role') || 'Estudiante';
         const activeUser = localStorage.getItem('username') || 'Estudiante UNACH';
         let editingActId = null;
+        window.activitiesCache = {}; // Memoria RAM Global anti-crashes de strings
 
         if (!token) window.location.href = '/index.html';
 
@@ -278,11 +484,27 @@
             document.getElementById('listPanel').className = 'col-12';
         }
 
-        function escapeHtml(str) { return (str || '').replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
+        function cleanHtml(str) {
+            return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
 
-        async function magicAI() {
-            const title = document.getElementById('actTitle').value;
-            if (!title) return alert('Escribe el título de la actividad primero.');
+        function showToast(msg, type = 'info') {
+            const old = document.querySelector('.toast-mini');
+            if (old) old.remove();
+            const toast = document.createElement('div');
+            toast.className = 'toast-mini';
+            toast.style.borderLeftColor = type === 'success' ? '#0f6e4a' : (type === 'error' ? '#c1292e' : '#003366');
+            toast.innerText = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = '0.3s'; setTimeout(() => toast.remove(), 300); }, 3000);
+        }
+
+        window.magicAI = async function () {
+            const title = document.getElementById('actTitle').value.trim();
+            if (!title) return showToast('Escribe el título primero.', 'warning');
+            const btn = document.querySelector('button[onclick="magicAI()"]');
+            const orig = btn.innerText;
+            btn.disabled = true; btn.innerText = 'Generando...';
             try {
                 const res = await fetch('/api/ai/generate', {
                     method: 'POST',
@@ -290,142 +512,183 @@
                     body: JSON.stringify({ title })
                 });
                 const data = await res.json();
-                if (res.ok) document.getElementById('actDesc').value = data.generatedText;
-            } catch (e) { alert('Error con el motor de IA.'); }
-        }
+                if (res.ok && data.generatedText) {
+                    document.getElementById('actDesc').value = data.generatedText;
+                    showToast('Descripción generada exitosamente.', 'success');
+                } else showToast('No se pudo generar con IA.', 'error');
+            } catch (e) { showToast('Error de conexión cloud.', 'error'); }
+            finally { btn.disabled = false; btn.innerText = orig; }
+        };
 
         document.getElementById('activityForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const title = document.getElementById('actTitle').value;
-            const description = document.getElementById('actDesc').value;
+            const title = document.getElementById('actTitle').value.trim();
+            const description = document.getElementById('actDesc').value.trim();
             const start_date = document.getElementById('actStartDate').value;
             const end_date = document.getElementById('actEndDate').value;
-            const status = document.getElementById('actStatus').value;
+            const status = document.getElementById('actStatus').value || 'En curso';
+
+            if (!title || !description || !start_date || !end_date) return showToast('Completa todos los campos.', 'warning');
 
             const url = editingActId ? `/api/activities/${editingActId}` : '/api/activities';
             const method = editingActId ? 'PUT' : 'POST';
+            const btn = document.getElementById('btnSubmitForm');
+            const orig = btn.innerText;
+            btn.disabled = true; btn.innerText = 'Guardando...';
 
-            const res = await fetch(url, {
-                method,
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify({ title, description, start_date, end_date, status })
-            });
-
-            if (res.ok) { cancelEdit(); loadActivities(); }
+            try {
+                const res = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ title, description, start_date, end_date, status })
+                });
+                if (res.ok) {
+                    showToast(editingActId ? 'Actividad actualizada.' : 'Publicada con éxito.', 'success');
+                    cancelEdit();
+                    loadActivities();
+                } else showToast('Error al guardar en SQLite.', 'error');
+            } catch (e) { showToast('Error de red.', 'error'); }
+            finally { btn.disabled = false; btn.innerText = orig; }
         });
 
-        function startEdit(id, title, desc, sDate, eDate, status) {
-            editingActId = id;
-            document.getElementById('actTitle').value = title;
-            document.getElementById('actDesc').value = desc;
-            document.getElementById('actStartDate').value = sDate;
-            document.getElementById('actEndDate').value = eDate;
-            document.getElementById('actStatus').value = status || 'En curso';
+        // EDITAR USANDO CACHÉ GLOBAL EN RAM (Cero crashes de sintaxis)
+        window.startEdit = function (id) {
+            const act = window.activitiesCache[id];
+            if (!act) return;
+            editingActId = act.id;
+            document.getElementById('actTitle').value = act.title || '';
+            document.getElementById('actDesc').value = act.description || '';
+            document.getElementById('actStartDate').value = act.start_date || '';
+            document.getElementById('actEndDate').value = act.end_date || '';
+            document.getElementById('actStatus').value = act.status || 'En curso';
 
             document.getElementById('statusBox').style.display = 'block';
             document.getElementById('formTitle').innerText = 'Modificar actividad';
             document.getElementById('btnSubmitForm').innerText = 'Guardar cambios';
-            document.getElementById('btnCancelEdit').style.display = 'block';
+            document.getElementById('btnCancelEdit').style.display = 'inline-block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        };
 
-        function cancelEdit() {
+        window.cancelEdit = function () {
             editingActId = null;
             document.getElementById('activityForm').reset();
             document.getElementById('statusBox').style.display = 'none';
             document.getElementById('formTitle').innerText = 'Publicar actividad';
             document.getElementById('btnSubmitForm').innerText = 'Publicar ahora';
             document.getElementById('btnCancelEdit').style.display = 'none';
-        }
+        };
 
-        async function loadActivities() {
-            const res = await fetch('/api/activities', { headers: { 'Authorization': `Bearer ${token}` } });
-            const activities = await res.json();
+        window.loadActivities = async function () {
             const container = document.getElementById('activitiesList');
-            container.innerHTML = '';
+            container.innerHTML = '<div class="col-12 text-center py-5"><div class="spinner-border spinner-border-sm text-secondary"></div><p class="text-muted mt-2 small">Cargando actividades...</p></div>';
+            try {
+                const res = await fetch('/api/activities', { headers: { 'Authorization': `Bearer ${token}` } });
+                const activities = await res.json();
+                container.innerHTML = '';
+                window.activitiesCache = {}; // Limpiar RAM
 
-            activities.forEach(act => {
-                const isFinished = (act.status === 'Finalizada');
-                const badgeClass = isFinished ? 'status-finished' : 'status-active';
-
-                let card = `
-          <div class="col-12">
-            <div class="clean-card p-4">
-              <div class="d-flex justify-content-between align-items-start mb-1">
-                <h5 class="fw-bold m-0 tracking-tight">${act.title}</h5>
-                <span class="status-badge ${badgeClass}">${act.status || 'En curso'}</span>
-              </div>
-              <small class="text-muted fw-semibold d-block mb-3" style="font-size:0.80rem;">
-                VIGENCIA: ${act.start_date || 'Sin definir'} — ${act.end_date || 'Sin definir'}
-              </small>
-              <p class="text-secondary small mb-4" style="white-space: pre-line; line-height: 1.6;">${act.description}</p>
-        `;
-
-                if (isDocente) {
-                    card += `
-            <div class="d-flex gap-1 pt-3 border-top">
-              <button class="btn-text btn-text-edit" onclick="startEdit(${act.id}, '${escapeHtml(act.title)}', '${escapeHtml(act.description)}', '${act.start_date}', '${act.end_date}', '${act.status}')">Editar</button>
-              <button class="btn-text btn-text-info" onclick="verAlumnos(${act.id}, '${escapeHtml(act.title)}')">Ver alumnos</button>
-              <button class="btn-text btn-text-danger ms-auto" onclick="deleteAct(${act.id})">Eliminar</button>
-            </div>
-          `;
-                } else {
-                    if (isFinished) {
-                        card += `<div class="pt-3 border-top text-end"><span class="btn-text text-muted">Actividad finalizada (Inscripciones cerradas)</span></div>`;
-                    } else {
-                        card += `<div class="pt-3 border-top text-end"><button class="btn btn-sm btn-dark fw-bold px-4" onclick="inscribirme(${act.id})">Inscribirme a esta actividad</button></div>`;
-                    }
+                if (!Array.isArray(activities) || activities.length === 0) {
+                    container.innerHTML = '<div class="col-12 text-center py-5 text-muted">No hay actividades registradas.</div>';
+                    return;
                 }
 
-                container.innerHTML += card + `</div></div>`;
-            });
-        }
+                activities.forEach((act, i) => {
+                    window.activitiesCache[act.id] = act; // Almacenar objeto puro en memoria
+                    const finished = act.status === 'Finalizada';
+                    const card = document.createElement('div');
+                    card.className = 'col-12';
+                    card.innerHTML = `
+                        <div class="card-clean animate-entry" style="animation-delay:${i * 0.04}s">
+                            <div class="d-flex justify-content-between align-items-start mb-2 flex-wrap gap-2">
+                                <h5 class="fw-bold m-0" style="color:var(--navy-800);">${cleanHtml(act.title)}</h5>
+                                <span class="badge-status ${finished ? 'badge-finished' : 'badge-active'}">${cleanHtml(act.status || 'En curso')}</span>
+                            </div>
+                            <small class="text-muted d-block mb-3" style="font-size:0.8rem;">VIGENCIA: ${act.start_date || '?'} — ${act.end_date || '?'}</small>
+                            <p class="text-secondary small mb-4" style="white-space:pre-line;">${cleanHtml(act.description)}</p>
+                            ${isDocente ? `
+                                <div class="d-flex gap-2 pt-3 border-top flex-wrap align-items-center">
+                                    <button class="btn-text-link p-0 me-2" onclick="startEdit(${act.id})">Editar</button>
+                                    <button class="btn-text-link p-0" onclick="verAlumnos(${act.id})">Ver alumnos</button>
+                                    <button class="btn-text-link btn-text-danger ms-auto p-0" onclick="deleteAct(${act.id})">Eliminar</button>
+                                </div>` : (finished ? `
+                                <div class="pt-3 border-top text-end"><span class="text-muted fw-semibold">Actividad finalizada (Cerrada)</span></div>` : `
+                                <div class="pt-3 border-top text-end"><button class="btn-inscribe" onclick="inscribirme(${act.id})">Inscribirme a la actividad</button></div>`)}
+                        </div>`;
+                    container.appendChild(card);
+                });
+            } catch (e) { container.innerHTML = '<div class="col-12 text-center py-5 text-danger small">Error al cargar datos.</div>'; }
+        };
 
-        async function inscribirme(actId) {
-            const res = await fetch('/api/activities/inscribe', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify({ activity_id: actId })
-            });
-            if (res.ok) alert('Inscripción registrada. Revisa tu asistencia con el docente.');
-            else alert('Ya te encuentras inscrito en esta actividad.');
-        }
+        window.inscribirme = async function (actId) {
+            const btn = document.querySelector(`button[onclick="inscribirme(${actId})"]`);
+            if (btn) { btn.disabled = true; btn.innerText = 'Procesando...'; }
+            try {
+                const res = await fetch('/api/activities/inscribe', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ activity_id: actId })
+                });
+                if (res.ok) showToast('Inscripción registrada con éxito.', 'success');
+                else showToast('Ya te encuentras inscrito.', 'info');
+            } catch (e) { showToast('Error de red.', 'error'); }
+            finally { if (btn) { btn.disabled = false; btn.innerText = 'Inscribirme a la actividad'; } }
+        };
 
-        async function verAlumnos(actId, title) {
-            document.getElementById('modalActTitle').innerText = title;
-            new bootstrap.Modal(document.getElementById('modalAlumnos')).show();
-            const res = await fetch(`/api/activities/${actId}/participants`, { headers: { 'Authorization': `Bearer ${token}` } });
-            const data = await res.json();
+        window.verAlumnos = async function (actId) {
+            const act = window.activitiesCache[actId];
+            document.getElementById('modalActTitle').innerText = act ? act.title : `Actividad #${actId}`;
+
+            const modalEl = document.getElementById('modalAlumnos');
+            bootstrap.Modal.getOrCreateInstance(modalEl).show(); // Instancia segura anti-pantallas negras
+
             const tbody = document.getElementById('tablaAlumnosBody');
-            tbody.innerHTML = '';
-            data.forEach(item => {
-                tbody.innerHTML += `
-          <tr>
-            <td class="fw-bold text-dark">${item.username}</td>
-            <td><select class="form-select form-select-sm" id="asist_${item.id}"><option value="Pendiente" ${item.asistencia === 'Pendiente' ? 'selected' : ''}>Pendiente</option><option value="Asistió" ${item.asistencia === 'Asistió' ? 'selected' : ''}>Asistió</option><option value="Ausente" ${item.asistencia === 'Ausente' ? 'selected' : ''}>Ausente</option></select></td>
-            <td><select class="form-select form-select-sm" id="seg_${item.id}"><option value="En Progreso" ${item.seguimiento === 'En Progreso' ? 'selected' : ''}>En Progreso</option><option value="Completado" ${item.seguimiento === 'Completado' ? 'selected' : ''}>Completado</option></select></td>
-            <td><button class="btn btn-sm btn-dark fw-bold" onclick="guardarProgreso(${item.id})">Guardar</button></td>
-          </tr>`;
-            });
-        }
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-muted">Cargando lista...</td></tr>';
+            try {
+                const res = await fetch(`/api/activities/${actId}/participants`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const data = await res.json();
+                tbody.innerHTML = '';
+                if (!Array.isArray(data) || data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-4">No hay estudiantes inscritos aún.</td></tr>';
+                    return;
+                }
+                data.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="fw-bold text-dark">${cleanHtml(item.username)}</td>
+                        <td><select class="input-field form-select-sm py-1" id="asist_${item.id}"><option value="Pendiente" ${item.asistencia === 'Pendiente' ? 'selected' : ''}>Pendiente</option><option value="Asistió" ${item.asistencia === 'Asistió' ? 'selected' : ''}>Asistió</option><option value="Ausente" ${item.asistencia === 'Ausente' ? 'selected' : ''}>Ausente</option></select></td>
+                        <td><select class="input-field form-select-sm py-1" id="seg_${item.id}"><option value="En Progreso" ${item.seguimiento === 'En Progreso' ? 'selected' : ''}>En Progreso</option><option value="Completado" ${item.seguimiento === 'Completado' ? 'selected' : ''}>Completado</option></select></td>
+                        <td><button class="btn-primary-custom py-1 px-3 shadow-sm" style="font-size:0.75rem;" onclick="guardarProgreso(${item.id})">Guardar</button></td>`;
+                    tbody.appendChild(row);
+                });
+            } catch (e) { tbody.innerHTML = '<tr><td colspan="4" class="text-center text-danger py-4">Error al obtener lista.</td></tr>'; }
+        };
 
-        async function guardarProgreso(inscriptId) {
+        window.guardarProgreso = async function (inscriptId) {
             const asistencia = document.getElementById(`asist_${inscriptId}`).value;
             const seguimiento = document.getElementById(`seg_${inscriptId}`).value;
-            await fetch(`/api/activities/participants/${inscriptId}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify({ asistencia, seguimiento })
-            });
-        }
+            const btn = document.querySelector(`button[onclick="guardarProgreso(${inscriptId})"]`);
+            if (btn) { btn.disabled = true; btn.innerText = '...'; }
+            try {
+                await fetch(`/api/activities/participants/${inscriptId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ asistencia, seguimiento })
+                });
+                showToast('Progreso guardado correctamente.', 'success');
+            } catch (e) { showToast('Error al guardar.', 'error'); }
+            finally { if (btn) { btn.disabled = false; btn.innerText = 'Guardar'; } }
+        };
 
-        async function deleteAct(id) {
-            if (!confirm('¿Eliminar actividad del sistema?')) return;
-            await fetch(`/api/activities/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
-            loadActivities();
-        }
+        window.deleteAct = async function (id) {
+            if (!confirm('¿Eliminar definitivamente esta actividad?')) return;
+            try {
+                await fetch(`/api/activities/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+                showToast('Actividad eliminada.', 'info');
+                loadActivities();
+            } catch (e) { showToast('Error al intentar eliminar.', 'error'); }
+        };
 
-        function logout() { localStorage.clear(); window.location.href = '/index.html'; }
+        window.logout = function () { localStorage.clear(); window.location.href = '/index.html'; };
         loadActivities();
     </script>
 </body>

@@ -1,7 +1,10 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const fs = require('fs');
 
-const dbPath = path.resolve(__dirname, 'uniactivity.sqlite');
+// Usar /data para persistencia en Docker, o __dirname para desarrollo local
+const dataDir = fs.existsSync('/data') ? '/data' : __dirname;
+const dbPath = path.join(dataDir, 'uniactivity.sqlite');
 
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {

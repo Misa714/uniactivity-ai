@@ -1,5 +1,11 @@
 require('dotenv').config();
 const express = require('express');
+
+// Validación de variables de entorno críticas al arranque
+if (!process.env.JWT_SECRET) {
+    console.error('⛔ FATAL: JWT_SECRET no está definido en el entorno. El servidor no puede arrancar de forma segura.');
+    process.exit(1);
+}
 const cors = require('cors');
 const path = require('path');
 const db = require('./database/db');
