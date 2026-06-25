@@ -1,12 +1,12 @@
-# UniActivity AI 🚀
+# UniActivity AI
 
 Plataforma Cloud para la Gestión de Actividades Universitarias con Asistencia de IA Generativa. Desarrollado como proyecto integral para la asignatura de DevOps en la Universidad Adventista de Chile (UNACH).
 
-## 📊 URL de Producción
+## URL de Producción
 
 Acceso directo a la plataforma en AWS: [http://54.164.50.235:3000](http://54.164.50.235:3000)
 
-## 🛠️ Tecnologías Utilizadas
+## Tecnologías Utilizadas
 
 - **Backend/Frontend:** Node.js / JavaScript
 - **Base de Datos:** SQLite (Relacional con volumen persistente)
@@ -17,7 +17,7 @@ Acceso directo a la plataforma en AWS: [http://54.164.50.235:3000](http://54.164
 - **CI/CD:** GitHub Actions
 - **Monitoreo:** PM2 (Process Manager 2)
 
-## 🚀 Pipeline de Integración Continua (CI)
+## Pipeline de Integración Continua (CI)
 
 El archivo `.github/workflows/devops.yml` automatiza los siguientes pasos ante cada `git push` a `main`:
 
