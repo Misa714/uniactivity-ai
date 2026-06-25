@@ -26,6 +26,8 @@ jobs:
         run: npm run lint
 
       - name: Test de Aplicacion (Jest)
+        env:
+          JWT_SECRET: key_test_secret_123
         run: npm test
 
       - name: Construccion de imagen Docker (Build)
