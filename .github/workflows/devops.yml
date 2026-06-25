@@ -2,31 +2,31 @@ name: Pipeline UniActivity AI CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout del codigo
-      uses: actions/checkout@v4
+      - name: Checkout del codigo
+        uses: actions/checkout@v4
 
-    - name: Configurar Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 22
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
-    - name: Instalamos dependencias (npm ci)
-      run: npm ci
+      - name: Instalamos dependencias (npm ci)
+        run: npm ci
 
-    - name: Hacer Lint en el Codigo (ESLint)
-      run: npm run lint
+      - name: Hacer Lint en el Codigo (ESLint)
+        run: npm run lint
 
-    - name: Test de Aplicacion (Jest)
-      run: npm test
+      - name: Test de Aplicacion (Jest)
+        run: npm test
 
-    - name: Construccion de imagen Docker (Build)
-      run: docker build -t uniactivity-ai-app:latest .
+      - name: Construccion de imagen Docker (Build)
+        run: docker build -t uniactivity-ai-app:latest .

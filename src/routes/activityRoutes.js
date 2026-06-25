@@ -20,6 +20,10 @@ router.post('/inscribe', auth(), activityController.inscribeStudent);
 router.get('/:id/participants', auth(), activityController.getParticipants);
 
 // Control de asistencia y seguimiento (Solo el rol 'Admin' puede modificarlo)
-router.put('/participants/:inscriptionId', auth(['Admin']), activityController.updateAttendanceAndProgress);
+router.put(
+  '/participants/:inscriptionId',
+  auth(['Admin']),
+  activityController.updateAttendanceAndProgress
+);
 
 module.exports = router;

@@ -1,4 +1,5 @@
 # Documento Técnico — UniActivity AI
+
 ### Evaluación Final · Asignatura DevOps · Universidad Adventista de Chile
 
 ---
@@ -19,24 +20,24 @@ El proyecto integra: contenedorización con Docker, automatización CI/CD con Gi
 
 Aplicación web fullstack que permite gestionar actividades académicas con dos roles de usuario:
 
-| Rol | Capacidades |
-|-----|-------------|
+| Rol                 | Capacidades                                                                               |
+| ------------------- | ----------------------------------------------------------------------------------------- |
 | **Admin (Docente)** | Crear, editar y eliminar actividades · Ver inscritos · Controlar asistencia y seguimiento |
-| **Estudiante** | Consultar actividades · Inscribirse · Ver estado |
+| **Estudiante**      | Consultar actividades · Inscribirse · Ver estado                                          |
 
 ### Stack tecnológico
 
-| Capa | Tecnología | Archivo clave |
-|------|-----------|---------------|
-| Servidor | Node.js + Express 5 | `src/app.js` |
-| Base de datos | SQLite 3 (relacional) | `src/database/db.js` |
-| Autenticación | JWT + bcryptjs | `src/middleware/auth.js` |
-| Frontend | HTML + CSS + Bootstrap 5 | `public/index.html`, `public/dashboard.html` |
-| IA Generativa | Motor local por keywords | `src/controllers/aiController.js` |
-| Contenerización | Docker + Docker Compose | `Dockerfile`, `docker-compose.yml` |
-| Monitoreo | PM2 | Integrado en `Dockerfile` |
-| CI/CD | GitHub Actions | `.github/workflows/devops.yml` |
-| Nube | AWS EC2 | `http://54.147.22.194:3000` |
+| Capa            | Tecnología               | Archivo clave                                |
+| --------------- | ------------------------ | -------------------------------------------- |
+| Servidor        | Node.js + Express 5      | `src/app.js`                                 |
+| Base de datos   | SQLite 3 (relacional)    | `src/database/db.js`                         |
+| Autenticación   | JWT + bcryptjs           | `src/middleware/auth.js`                     |
+| Frontend        | HTML + CSS + Bootstrap 5 | `public/index.html`, `public/dashboard.html` |
+| IA Generativa   | Motor local por keywords | `src/controllers/aiController.js`            |
+| Contenerización | Docker + Docker Compose  | `Dockerfile`, `docker-compose.yml`           |
+| Monitoreo       | PM2                      | Integrado en `Dockerfile`                    |
+| CI/CD           | GitHub Actions           | `.github/workflows/devops.yml`               |
+| Nube            | AWS EC2                  | `http://54.164.50.235:3000`                  |
 
 ### Flujo de usuario completo
 
@@ -82,20 +83,20 @@ Usuario → index.html → POST /api/auth/login → JWT
                  ▼
            sqlite_data (persistente)
 
-           AWS EC2 → http://54.147.22.194:3000
+           AWS EC2 → http://54.164.50.235:3000
 ```
 
 ### Responsabilidades por componente
 
-| Componente | Responsabilidad |
-|------------|----------------|
-| **GitHub** | Control de versiones, historial de commits, Actions |
-| **GitHub Actions** | Automatización de calidad y build de imagen |
-| **Docker** | Empaquetado reproducible de la aplicación |
-| **Docker Compose** | Orquestación local con volumen persistente |
-| **PM2** | Monitoreo, logs y reinicio automático del proceso Node |
-| **AWS EC2** | Servidor cloud para producción |
-| **SQLite** | Base de datos relacional, persistida en volumen Docker |
+| Componente         | Responsabilidad                                        |
+| ------------------ | ------------------------------------------------------ |
+| **GitHub**         | Control de versiones, historial de commits, Actions    |
+| **GitHub Actions** | Automatización de calidad y build de imagen            |
+| **Docker**         | Empaquetado reproducible de la aplicación              |
+| **Docker Compose** | Orquestación local con volumen persistente             |
+| **PM2**            | Monitoreo, logs y reinicio automático del proceso Node |
+| **AWS EC2**        | Servidor cloud para producción                         |
+| **SQLite**         | Base de datos relacional, persistida en volumen Docker |
 
 ---
 
@@ -125,10 +126,12 @@ CMD ["pm2-runtime", "src/app.js", "--name", "uniactivity-ai"]
 ```
 
 **¿Por qué dos etapas?**
+
 - Stage 1 tiene `python3`, `make`, `g++` para compilar `sqlite3` desde fuente (evita el error `GLIBC_2.38 not found`).
 - Stage 2 solo tiene lo necesario para ejecutar → imagen más pequeña y segura.
 
 **¿Por qué `pm2-runtime`?**
+
 - Versión de PM2 diseñada para Docker: mantiene el proceso en foreground para que Docker lo gestione correctamente, sin fork en background.
 
 ### Docker Compose
@@ -139,11 +142,11 @@ services:
     build: .
     container_name: uniactivity_app
     ports:
-      - "3000:3000"
+      - '3000:3000'
     env_file:
       - .env
     volumes:
-      - sqlite_data:/data    # BD persistente fuera del código
+      - sqlite_data:/data # BD persistente fuera del código
     restart: always
 
 volumes:
@@ -152,11 +155,11 @@ volumes:
 
 **Decisiones clave:**
 
-| Decisión | Razón |
-|----------|-------|
-| `restart: always` | El contenedor se reinicia si falla o al reiniciar el servidor |
+| Decisión            | Razón                                                                                    |
+| ------------------- | ---------------------------------------------------------------------------------------- |
+| `restart: always`   | El contenedor se reinicia si falla o al reiniciar el servidor                            |
 | `sqlite_data:/data` | Volumen en `/data`, separado del código en `/app`. Evita que sobrescriba archivos fuente |
-| `env_file: .env` | Variables sensibles no hardcodeadas en el Compose |
+| `env_file: .env`    | Variables sensibles no hardcodeadas en el Compose                                        |
 
 ### Problemas reales resueltos
 
@@ -180,9 +183,9 @@ Se activa automáticamente en cada `push` o `pull_request` a `main`.
 name: Pipeline UniActivity AI CI
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-and-test:
@@ -200,20 +203,20 @@ jobs:
 
 ### Pasos explicados
 
-| Paso | Comando | ¿Qué hace? |
-|------|---------|------------|
-| 1 | `npm ci` | Instala dependencias exactas del `package-lock.json`. Más estricto que `npm install` |
-| 2 | `npm run lint` | Ejecuta ESLint. Si hay errores, el pipeline se detiene |
-| 3 | `npm test` | Ejecuta Jest. Verifica que el endpoint `/api/health` responde `200 OK` |
-| 4 | `docker build` | Construye la imagen completa. Valida que el Dockerfile es correcto |
+| Paso | Comando        | ¿Qué hace?                                                                           |
+| ---- | -------------- | ------------------------------------------------------------------------------------ |
+| 1    | `npm ci`       | Instala dependencias exactas del `package-lock.json`. Más estricto que `npm install` |
+| 2    | `npm run lint` | Ejecuta ESLint. Si hay errores, el pipeline se detiene                               |
+| 3    | `npm test`     | Ejecuta Jest. Verifica que el endpoint `/api/health` responde `200 OK`               |
+| 4    | `docker build` | Construye la imagen completa. Valida que el Dockerfile es correcto                   |
 
 ### Calidad de código
 
-| Herramienta | Archivo config | Rol |
-|-------------|---------------|-----|
-| **ESLint** | `eslint.config.js` | Detecta errores y malas prácticas en JavaScript |
-| **Prettier** | `.prettierrc` | Formateado consistente (comillas simples, sin trailing comma, tabWidth: 2) |
-| **Jest + Supertest** | `tests/app.test.js` | Prueba el endpoint `/api/health` con petición HTTP real |
+| Herramienta          | Archivo config      | Rol                                                                        |
+| -------------------- | ------------------- | -------------------------------------------------------------------------- |
+| **ESLint**           | `eslint.config.js`  | Detecta errores y malas prácticas en JavaScript                            |
+| **Prettier**         | `.prettierrc`       | Formateado consistente (comillas simples, sin trailing comma, tabWidth: 2) |
+| **Jest + Supertest** | `tests/app.test.js` | Prueba el endpoint `/api/health` con petición HTTP real                    |
 
 ---
 
@@ -222,9 +225,9 @@ jobs:
 ### Infraestructura
 
 - **Servicio:** Amazon EC2 (Elastic Compute Cloud)
-- **IP Pública:** `54.147.22.194`
+- **IP Pública:** `54.164.50.235`
 - **Puerto:** `3000`
-- **URL producción:** `http://54.147.22.194:3000`
+- **URL producción:** `http://54.164.50.235:3000`
 
 ### Proceso de despliegue en EC2
 
@@ -239,18 +242,18 @@ El mismo `Dockerfile` que funciona en desarrollo funciona en producción — esa
 
 ### Ventajas de Docker en EC2
 
-| Ventaja | Descripción |
-|---------|-------------|
-| **Reproducibilidad** | Mismo `Dockerfile` en local y producción |
-| **Portabilidad** | Migrar de servidor solo requiere clonar y levantar |
-| **Aislamiento** | La app no depende del OS del servidor |
+| Ventaja              | Descripción                                        |
+| -------------------- | -------------------------------------------------- |
+| **Reproducibilidad** | Mismo `Dockerfile` en local y producción           |
+| **Portabilidad**     | Migrar de servidor solo requiere clonar y levantar |
+| **Aislamiento**      | La app no depende del OS del servidor              |
 
 ### Security Groups EC2
 
-| Puerto | Protocolo | Origen | Propósito |
-|--------|-----------|--------|-----------|
-| `3000` | TCP | `0.0.0.0/0` | Acceso público a la app |
-| `22` | TCP | IP del admin | Acceso SSH |
+| Puerto | Protocolo | Origen       | Propósito               |
+| ------ | --------- | ------------ | ----------------------- |
+| `3000` | TCP       | `0.0.0.0/0`  | Acceso público a la app |
+| `22`   | TCP       | IP del admin | Acceso SSH              |
 
 ---
 
@@ -333,7 +336,7 @@ docker exec uniactivity_app pm2 status
 docker compose logs -f
 
 # Health check de la API
-curl http://54.147.22.194:3000/api/health
+curl http://54.164.50.235:3000/api/health
 # → {"status":"ok","message":"Servidor UniActivity AI levantado."}
 ```
 
@@ -382,16 +385,16 @@ spec:
         app: uniactivity-ai
     spec:
       containers:
-      - name: app
-        image: uniactivity-ai-app:latest
-        ports:
-        - containerPort: 3000
-        env:
-        - name: JWT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: uniactivity-secrets
-              key: jwt_secret
+        - name: app
+          image: uniactivity-ai-app:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: uniactivity-secrets
+                  key: jwt_secret
 ---
 apiVersion: v1
 kind: Service
@@ -402,19 +405,19 @@ spec:
   selector:
     app: uniactivity-ai
   ports:
-  - port: 80
-    targetPort: 3000
+    - port: 80
+      targetPort: 3000
 ```
 
 ### Comparativa: estado actual vs Kubernetes
 
-| Aspecto | Estado actual | Con Kubernetes |
-|---------|--------------|----------------|
-| Base de datos | SQLite (1 archivo) | PostgreSQL (concurrencia real) |
-| Escalado | Manual (1 contenedor) | HPA automático |
-| Secrets | `.env` local | K8s Secrets |
-| CI/CD destino | EC2 directo | ECR → EKS (AWS) |
-| Monitoreo | PM2 | PM2 + Prometheus + Grafana |
+| Aspecto       | Estado actual         | Con Kubernetes                 |
+| ------------- | --------------------- | ------------------------------ |
+| Base de datos | SQLite (1 archivo)    | PostgreSQL (concurrencia real) |
+| Escalado      | Manual (1 contenedor) | HPA automático                 |
+| Secrets       | `.env` local          | K8s Secrets                    |
+| CI/CD destino | EC2 directo           | ECR → EKS (AWS)                |
+| Monitoreo     | PM2                   | PM2 + Prometheus + Grafana     |
 
 ### Herramientas AWS recomendadas
 
@@ -454,4 +457,4 @@ spec:
 
 ---
 
-*Documento técnico — Evaluación Final DevOps · Universidad Adventista de Chile · 2026*
+_Documento técnico — Evaluación Final DevOps · Universidad Adventista de Chile · 2026_

@@ -3,12 +3,14 @@ const express = require('express');
 
 // Validación de variables de entorno críticas al arranque
 if (!process.env.JWT_SECRET) {
-    console.error('⛔ FATAL: JWT_SECRET no está definido en el entorno. El servidor no puede arrancar de forma segura.');
-    process.exit(1);
+  console.error(
+    '⛔ FATAL: JWT_SECRET no está definido en el entorno. El servidor no puede arrancar de forma segura.'
+  );
+  process.exit(1);
 }
 const cors = require('cors');
 const path = require('path');
-const db = require('./database/db');
+require('./database/db');
 const authRoutes = require('./routes/authRoutes');
 const activityRoutes = require('./routes/activityRoutes');
 const aiRoutes = require('./routes/aiRoutes');
@@ -26,13 +28,13 @@ app.use('/api/activities', activityRoutes);
 app.use('/api/ai', aiRoutes);
 
 app.get('/api/health', (req, res) => {
-    res.json({ status: 'ok', message: 'Servidor UniActivity AI levantado.' });
+  res.json({ status: 'ok', message: 'Servidor UniActivity AI levantado.' });
 });
 
 if (process.env.NODE_ENV !== 'test') {
-    app.listen(PORT, () => {
-        console.log(`Servidor corriendo en: http://localhost:${PORT}`);
-    });
+  app.listen(PORT, () => {
+    console.log(`Servidor corriendo en: http://localhost:${PORT}`);
+  });
 }
 
 module.exports = app;
